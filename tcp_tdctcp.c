@@ -148,6 +148,10 @@ static void tdctcp_init(struct sock *sk)
 	INET_ECN_dontxmit(sk);
 }
 
+/**
+ * Author: Liang Junpeng
+ * This function is for avoiding overflow
+ **/
 static u32 mul_ratio(u32 tar, u32 numerator, u32 denominator)
 {
 	u32 ret = tar;
@@ -167,6 +171,8 @@ static u32 mul_ratio(u32 tar, u32 numerator, u32 denominator)
 }
 
 /*
+ * Author: Liang Junpeng
+ * This function is for calculating new cwnd (Main Algorithm)
  * return: new cwnd value
  */
 static u32 update_cwnd(struct sock *sk)
@@ -236,10 +242,13 @@ static u32 tdctcp_ssthresh(struct sock *sk)
 	struct tcp_sock *tp = tcp_sk(sk);
 
 	ca->loss_cwnd = tp->snd_cwnd;
-	return max(ca->cwnd, 2U);
+	return max(ca->cwnd, 2U); // When slow start is trigued, this function will be called
 }
 
-/* Compute rtt difference and record new rtt each time when ack arrives */
+/**
+ * Author: Liang Junpeng
+ * Compute rtt difference and record new rtt each time when ack arrives
+ **/
 static void tdctcp_pkts_acked(struct sock *sk, const struct ack_sample *sample)
 {
     struct tdctcp *ca = inet_csk_ca(sk);
@@ -450,7 +459,7 @@ static struct tcp_congestion_ops tdctcp __read_mostly = {
 	.in_ack_event   = tdctcp_update_alpha,
 	.cwnd_event	= tdctcp_cwnd_event,
 	.ssthresh	= tdctcp_ssthresh,
-	.pkts_acked = tdctcp_pkts_acked,
+	.pkts_acked = tdctcp_pkts_acked, // New function
 	.cong_avoid	= tcp_reno_cong_avoid,
 	.undo_cwnd	= tdctcp_cwnd_undo,
 	.set_state	= tdctcp_state,
@@ -484,4 +493,4 @@ module_exit(tdctcp_unregister);
 
 MODULE_AUTHOR("Erian Liang <jungg1996@gmail.com>");
 MODULE_LICENSE("GPL v2");
-MODULE_DESCRIPTION("TIMELY & DataCenter TCP (TDCTCP)");
+MODULE_DESCRIPTION("TIMELY & DataCenter TCP (T-DCTCP)");
