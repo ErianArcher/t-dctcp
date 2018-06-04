@@ -45,7 +45,7 @@ python ../util/plot_fct.py -f ./tdctcp-n16-bw100/fct.txt ./dctcp-n16-bw100/fct.t
 ```shell
 python ../util/plot_tcpprobe.py -f ./tdctcp-n16-bw100/tcp_probe.txt ./dctcp-n16-bw100/tcp_probe.txt ./tcp-n16-bw100/tcp_probe.txt -o comparison
 ```
-`A folder, comparison, has to be generated before the code above is run. Only the file, CDF_RTT.png, is useful in this folder.`
+**A folder, comparison, has to be generated before the code above is run. Only the file, CDF_RTT.png, is useful in this folder.**
 
 ---
 # Implementation
