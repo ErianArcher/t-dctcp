@@ -31,7 +31,7 @@ python ../util/plot_fct.py -f ./tdctcp-n16-bw100/fct.txt ./dctcp-n16-bw100/fct.t
 
 ## Steps to run
 ```
-1. Install Ryu and [Hedera] following the instruction in (https://github.com/Huangmachi/Hedera)
+1. Install Ryu and Hedera following the instruction in (https://github.com/Huangmachi/Hedera)
 2. cd t-dctcp
 3. chmod +x deploy.sh
 4. sudo ./deploy.sh
