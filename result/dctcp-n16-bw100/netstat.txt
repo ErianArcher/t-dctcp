@@ -1,0 +1,67 @@
+Ip:
+    67184 total packets received
+    0 forwarded
+    0 incoming packets discarded
+    67184 incoming packets delivered
+    63511 requests sent out
+Icmp:
+    30 ICMP messages received
+    0 input ICMP message failed.
+    ICMP input histogram:
+        echo requests: 15
+        echo replies: 15
+    30 ICMP messages sent
+    0 ICMP messages failed
+    ICMP output histogram:
+        echo request: 15
+        echo replies: 15
+IcmpMsg:
+        InType0: 15
+        InType8: 15
+        OutType0: 15
+        OutType8: 15
+Tcp:
+    0 active connections openings
+    13 passive connection openings
+    0 failed connection attempts
+    0 connection resets received
+    0 connections established
+    67154 segments received
+    63481 segments send out
+    1 segments retransmited
+    0 bad segments received.
+    3 resets sent
+Udp:
+    0 packets received
+    0 packets to unknown port received.
+    0 packet receive errors
+    0 packets sent
+UdpLite:
+TcpExt:
+    2 SYN cookies sent
+    2 SYN cookies received
+    3 invalid SYN cookies received
+    58 delayed acks sent
+    Quick ack mode was activated 3 times
+    11 times the listen queue of a socket overflowed
+    11 SYNs to LISTEN sockets dropped
+    62247 packets directly queued to recvmsg prequeue.
+    2494904 bytes directly in process context from backlog
+    145878184 bytes directly received in process context from prequeue
+    554 packet headers predicted
+    49063 packets header predicted and directly queued to user
+    23 acknowledgments not containing data payload received
+    1 other TCP timeouts
+    76 times receiver scheduled too late for direct processing
+    3 DSACKs sent for old packets
+    TCPReqQFullDoCookies: 2
+    TCPRcvCoalesce: 5381
+    TCPOFOQueue: 10191
+    TCPSynRetrans: 1
+    TCPOrigDataSent: 13
+IpExt:
+    InOctets: 176557840
+    OutOctets: 3463568
+    InNoECTPkts: 119595
+    InECT0Pkts: 14
+    InCEPkts: 2

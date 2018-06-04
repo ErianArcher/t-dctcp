@@ -1,0 +1,1 @@
+The throughput of alpha-1over2 is 72.680000

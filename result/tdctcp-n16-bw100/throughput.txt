@@ -1,0 +1,1 @@
+The throughput of ./tdctcp-n16-bw100/iperf_h1.txt is 77.990000

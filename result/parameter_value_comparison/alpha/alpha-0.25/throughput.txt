@@ -1,0 +1,1 @@
+The throughput of alpha-1over4 is 72.320000
