@@ -1,29 +1,51 @@
-# TDCTCP
+# T-DCTCP
 Combine TIMELY with DCTCP
 # How to use this algorithm
+## Folder structure
+    .
+    ├── experiement
+    |  ├── exp              # This folder contains all the experiment scripts
+    |  ├── util             # This folder contains scripts for visualizing experiment results
+    ├── docs                # The thesis of T-DCTCP and presentation PPT are in this folder
+    ├── result              # A set of experiment result
+    |  ├── parameter_value_comparison # Experiment result for choose good values for different parameters
+    |  ├── parameters_proof.xlsx      # Drawing diagrams for the comparison of different values for different parameters and the comparison of throughput between DCTCP and T-DCTCP
+    |  ├── ...
+    ├── depoly_dctcp.sh
+    ├── depoly_tdctcp.sh
+    ├── depoly.sh           # Probe modules to kernel
+    └── tcp_tdctcp.c        # Source code of T-DCTCP algorithm
+---
 ## Prerequisition
-+ Mininet VM: download [Mininet 2.2.2 on Ubuntu 14.04 LTS - 32 bit](https://github.com/mininet/mininet/releases/download/2.2.2/mininet-2.2.2-170321-ubuntu-14.04.4-server-i386.zip) and follow the [user guide](http://mininet.org/download/#option-1-mininet-vm-installation-easy-recommended) to start the VM.
-+ (Optional) You can also install Mininet on your local machine, but some errors may occur when compiling tcp_tdctcp, because Linux Kernel may be updated in some header files. **If you need a local Mininet, then you should fix the errors occurring by yourself while compilation fails.**
-+ This algorithm is only tested with Linux Kernel 4.2.0-generic, and this kernel contains the implementation of DCTCP, from which I borrow the code of updating the value of alpha.
++ System Specifications: Best for **Ubuntu 16.04** or any system with **Linux kernel 4.13.0**.
++ I try to install my project on Mininet VM provided by official website, but it cannot run Fat-tree topology correctly because of out-of-date ovs-switch version.
++ This algorithm is only tested with Linux kernel 4.13.0-43-generic, and this kernel contains the implementation of DCTCP, from which I borrow the code of updating the value of alpha.
 + BWM-NG: `apt-get install bwm-ng`
 + Python: Matplotlib *(The VM cannot run Matplotlib for the module, `six`,  is not up-to-date)* and Termcolor. **They are used to plot the data from the result. (The commented codes in `experiment/exp/run-exp.sh`)**
 ``` shell
-#sudo python ../util/plot_rate.py --maxy $bw -f $odir/txrate.txt -o $odir/rate.png
-#sudo python ../util/plot_queue.py --maxy 50 -f $odir/qlen_s1-eth1.txt -o $odir/qlen.png
-#sudo python ../util/plot_tcpprobe.py -f $odir/tcp_probe.txt -o $odir
+sudo python ../util/plot_tcpprobe.py -f $odir/tcp_probe.txt -o $odir
+sudo python ../util/plot_bw.py -f $odir/iperf_h1.txt -o $odir
+python ../util/plot_tcpprobe.py -f ./tdctcp-n16-bw100/tcp_probe.txt ./dctcp-n16-bw100/tcp_probe.txt ./tcp-n16-bw100/tcp_probe.txt -o comparison
+python ../util/plot_fct.py -f ./tdctcp-n16-bw100/fct.txt ./dctcp-n16-bw100/fct.txt -o .
 ```
 
 ## Steps to run
 ```
-1. Copy the repository to the VM via ssh.
-2. cd tdctcp
+1. Install Ryu and [Hedera] following the instruction in (https://github.com/Huangmachi/Hedera)
+2. cd t-dctcp
 3. chmod +x deploy.sh
 4. sudo ./deploy.sh
 5. cd experiment/exp
 6. chmod +x run-exp.sh
-7. sudo ./run-exp.sh
+7. Change the parameter, ryu_cmd, to the absolute location of Hedera.py on line 8 of run-exp.sh
+8. mkdir comparison # Must be run before step 9 unless a folder named `comparison` has been created.
+9. sudo ./run-exp.sh
 ```
-*After the script finishes, some folders will appear in current directory, and they are the result of experiment. If Matplotlib is installed on your PC or VM, you can uncomment the commented codes in run-exp.sh as showed in last section, and some diagram will be generated which can directly show how the algorithm performs.*
+*After the script finishes, three folders will appear in current directory, and they are the results of experiment. If Matplotlib is installed on your PC or VM, some diagrams revealing how T-DCTCP performs will be generated including throughput, flow completion time and round trip time.*
+```shell
+python ../util/plot_tcpprobe.py -f ./tdctcp-n16-bw100/tcp_probe.txt ./dctcp-n16-bw100/tcp_probe.txt ./tcp-n16-bw100/tcp_probe.txt -o comparison
+```
+`A folder, comparison, has to be generated before the code above is run. Only the file, CDF_RTT.png, is useful in this folder.`
 
 ---
 # Implementation
@@ -33,7 +55,7 @@ Most of the code are from the source code of DCTCP, and I actually add some new 
 + g: 1/16 *(EWMA weight parameter for calculating new alpha)*
 + alpha_factor: 1/8
 + beta: 1/8 *(EWMA weight parameter for calculating new rtt_diff)*
-+ addstep: 2
++ addstep: 1
 + multiplicative decrement factor: 1/4
 + decre: 1/2 (reduce the reduction)
 + THigh: 50000us *(100Mbps)* 5000us *(1Gbps)* 500us *(10Gbps)*
