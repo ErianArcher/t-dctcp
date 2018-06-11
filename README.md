@@ -10,9 +10,11 @@ Combine TIMELY with DCTCP
     ├── result              # A set of experiment result
     |  ├── parameter_value_comparison # Experiment result for choose good values for different parameters
     |  ├── parameters_proof.xlsx      # Drawing diagrams for the comparison of different values for different parameters and the comparison of throughput between DCTCP and T-DCTCP
-    |  ├── ...
-    ├── depoly_dctcp.sh
-    ├── depoly_tdctcp.sh
+    |  ├── dctcp-n16-bw100            # Result of DCTCP
+    |  ├── tdctcp-n16-bw100           # Result of T-DCTCP
+    |  ├── tcp-n16-bw100              # Result of TCP with CUBIC
+    ├── depoly_dctcp.sh     # This is sub module of deploy.sh
+    ├── depoly_tdctcp.sh    # This is sub module of deploy.sh
     ├── depoly.sh           # Probe modules to kernel
     └── tcp_tdctcp.c        # Source code of T-DCTCP algorithm
 ---
