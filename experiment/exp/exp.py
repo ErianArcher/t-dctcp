@@ -18,6 +18,8 @@ import re
 import argparse
 import fattree4
 from mininet.node import OVSKernelSwitch as Switch
+import os
+from os import path
 
 import os
 from util.monitor import monitor_cpu, monitor_qlen, monitor_devs_ng
@@ -286,6 +288,7 @@ import thread, threading
 mutex = threading.Lock()
 count=15
 flow_num = { '2KB':10, '50KB':20, '1MB':8, '10MB':3, '25MB':0}
+simDataPath = os.path.abspath(os.path.join('..', '..', 'data'))
 def big_flow_first(tar, host, ofile):
     global count
     output = []
@@ -296,7 +299,7 @@ def big_flow_first(tar, host, ofile):
     _10MB = flow_num['10MB']
     _25MB = flow_num['25MB']
     while _2KB > 0 or _50KB > 0 or _1MB > 0 or _10MB > 0 or _25MB > 0:
-        cmd = "curl -o /dev/null -w%{time_connect}:%{time_starttransfer}:%{time_total} -s -d @/home/erian/Documents/graduation_design/data/"
+        cmd = "curl -o /dev/null -w%%{time_connect}:%%{time_starttransfer}:%%{time_total} -s -d @%s/" % simDataPath
         suffix = ":"
         flag = False # Ensuring right data is input in case that error cmd is generated.
         if change == 0 and _25MB > 0:
@@ -351,7 +354,7 @@ def small_flow_first(tar, host, ofile):
     _10MB = flow_num['10MB']
     _25MB = flow_num['25MB']
     while _2KB > 0 or _50KB > 0 or _1MB > 0 or _10MB > 0 or _25MB > 0:
-        cmd = "curl -o /dev/null -w%{time_connect}:%{time_starttransfer}:%{time_total} -s -d @/home/erian/Documents/graduation_design/data/"
+        cmd = "curl -o /dev/null -w%%{time_connect}:%%{time_starttransfer}:%%{time_total} -s -d @%s/" % simDataPath
         suffix = ":"
         flag = False # Ensuring right data is input in case that error cmd is generated.
         if change == 4 and _25MB > 0:
@@ -403,7 +406,8 @@ def multi_flows_incast(net, topo):
         os.remove(ofile)
 
     hosts = [net.get(c) for c in topo.HostList]
-    hosts[0].popen('python /home/erian/Documents/graduation_design/PostHTTPServer.py 80', shell=True)
+    httpServerAddr = os.path.abspath(os.path.join('..', '..', 'PostHTTPServer.py'))
+    hosts[0].popen('python %s 80' % httpServerAddr, shell=True)
     for i in xrange(1, args.n, 2):
         thread.start_new_thread(big_flow_first, (hosts[0].IP(), hosts[i], ofile))
     for i in xrange(2, args.n, 2):

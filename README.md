@@ -11,6 +11,8 @@ Combine TIMELY with DCTCP
     |  ├── parameter_value_comparison # Experiment result for choose good values for different parameters
     |  ├── parameters_proof.xlsx      # Drawing diagrams for the comparison of different values for different parameters and the comparison of throughput between DCTCP and T-DCTCP
     |  ├── ...
+    ├── gen_bytes.py # It is used to generate data files for transmission test.
+    ├── PostHTTPServer.py # It is neccessary for line 406 of experiment/exp/exp.py
     ├── depoly_dctcp.sh
     ├── depoly_tdctcp.sh
     ├── depoly.sh           # Probe modules to kernel
